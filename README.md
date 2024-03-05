@@ -2,8 +2,8 @@
 
 ## Dependencies
 ### Install ollama
-- Refer to (this link)[https://ollama.com/download] to install ollama
-- Or (more preferably) install with docker with (the following tutorial)[https://ollama.com/blog/ollama-is-now-available-as-an-official-docker-image]
+- Refer to [this link](https://ollama.com/download) to install ollama
+- Or (more preferably) install with docker with [the following tutorial](https://ollama.com/blog/ollama-is-now-available-as-an-official-docker-image)
     - CPU only:
     ```bash
     docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
