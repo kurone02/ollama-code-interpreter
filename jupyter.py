@@ -68,7 +68,7 @@ class JupyterNotebook:
             outputs = ["Timeout after 10 seconds"]
             error_flag = True
 
-        return self.clean_output(outputs), error_flag
+        return outputs, self.clean_output(outputs), error_flag
 
     def close(self):
         """Shutdown the kernel."""

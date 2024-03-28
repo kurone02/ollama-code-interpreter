@@ -15,6 +15,7 @@ class CodeInterpreter:
             self.dialog.extend(prompts.few_shot_2)
             self.dialog.extend(prompts.few_shot_3)
             self.dialog.extend(prompts.few_shot_4)
+            self.dialog.extend(prompts.few_shot_5)
 
     def reset_dialog(self, few_shot: bool=True):
         self.dialog = []
@@ -24,6 +25,7 @@ class CodeInterpreter:
             self.dialog.extend(prompts.few_shot_2)
             self.dialog.extend(prompts.few_shot_3)
             self.dialog.extend(prompts.few_shot_4)
+            self.dialog.extend(prompts.few_shot_5)
 
     def _add_dialog_content(self, role: str, content: str) -> None:
         self.dialog.append(
@@ -60,16 +62,14 @@ class CodeInterpreter:
             first_code_pos = generated_text.find(code)
             generated_text = generated_text[:first_code_pos]
 
-            output, error_flag = self.notebook.add_and_run(code)
+            output, cleaned_output, error_flag = self.notebook.add_and_run(code)
+
+            answer = f"""{generated_text}\n{code}\n```\n```RESULT\n{cleaned_output[0]}\n```\n"""
+            answer_to_user = f"""{generated_text}\n{code}\n```\n```RESULT\n{output[0]}\n```\n"""
+            results.append(answer_to_user)
 
             if verbose:
-                print(f"""```RESULT\n{output}\n```""")
-
-            answer = f"""{generated_text}\n{code}\n```\n```RESULT\n{output}\n```\n"""
-            results.append(answer)
-
-            if verbose:
-                print(answer)
+                print(answer_to_user)
 
             self.add_assistant_content(answer)
             self.add_user_content("Keep going.\n")
@@ -81,10 +81,11 @@ class CodeInterpreter:
 
 
 if __name__ == "__main__":
-    MODEL_ID = "deepseek-coder:33b-instruct-q8_0"
+    # MODEL_ID = "deepseek-coder:33b-instruct-q8_0"
+    MODEL_ID = "mixtral"
     interpreter = CodeInterpreter(model=MODEL_ID)
 
-    responses = interpreter.interpret("What is the 69-th value of the Catalan sequence?", options={
+    responses = interpreter.interpret("Can you inspect this data?" + " Uploaded files: `/home/duc/interpreter/industry.csv`", max_attempts=5, verbose=True, options={
         "temperature": 0.8,
     })
 

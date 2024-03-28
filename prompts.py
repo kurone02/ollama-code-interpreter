@@ -290,3 +290,39 @@ headers = {
 """,
     },
 ]
+
+
+few_shot_5 = [
+    {
+        "role": "user", "content": "Who is the current president of South Korea?",
+    },
+    {
+        "role": "assistant",
+        "content": """```python
+
+import wikipedia
+
+def get_current_korean_president():
+    try:
+        page = wikipedia.page("President of South Korea")
+        content = page.content
+        president_name = content[content.index("current president") + len("current president"): content.index("\n\n", content.index("current president"))].strip()
+        
+        return president_name
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
+president = get_current_korean_president()
+print(f"The current President of South Korea is: {president}")
+```
+```RESULT
+The current President of South Korea is: , Yoon Suk Yeol, a former prosecutor general and member of the conservative People Power Party, assumed office on 10 May 2022, after defeating the Democratic Party's nominee Lee Jae-myung with a narrow 48.5% plurality in the 2022 South Korean presidential election.
+
+```
+"""
+    },
+    {"role": "user", "content": "Keep going"},
+    {"role": "assistant", "content": "The current President of South Korea is Yoon Suk Yeol"},
+]
